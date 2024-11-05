@@ -1,5 +1,3 @@
-// server.js
-
 const express = require("express");
 const cors = require("cors");
 const { sequelize, connectDB } = require("./config/db");
@@ -21,9 +19,10 @@ const connectSync = async () => {
   try {
     await connectDB();
     await sequelize.sync();
+    console.log("Database connected and models synced");
   } catch (error) {
     console.error("Error syncing database models:", error);
-    process.exit(1); // Exit the process if there’s an error
+    process.exit(1); // Exit the process if there's an error
   }
 };
 
@@ -44,7 +43,20 @@ app.use("/matches", matchRoutes);
 app.use("/joins", joinRoutes);
 
 // Start the server
-app.listen(port, async () => {
+const startServer = async () => {
   await connectSync(); // Wait for connection and syncing to complete
-  console.log(`Server running on http://localhost:${port}`);
+
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+};
+
+// Handle server shutdown gracefully
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+  });
 });
+
+startServer();
