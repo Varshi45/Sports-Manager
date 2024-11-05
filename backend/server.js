@@ -26,6 +26,10 @@ const connectSync = async () => {
   }
 };
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Sports Match API");
+});
+
 // Test Route to check database connection
 app.get("/api/test", async (req, res) => {
   try {
