@@ -14,7 +14,7 @@ const PlayerMatches = () => {
     if (playerId) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/joins/player/${playerId}`
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/joins/player/${playerId}`
         );
         const data = await response.json();
         setJoinedMatches(data.joins);

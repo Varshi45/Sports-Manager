@@ -9,7 +9,7 @@ const CreateSportForm = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/sports/create`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/sports/create`,
         {
           method: "POST",
           headers: {

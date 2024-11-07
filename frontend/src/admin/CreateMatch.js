@@ -18,7 +18,7 @@ const CreateMatchForm = () => {
       if (!user?.id) return;
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/sports/admin/${user.id}`,
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/sports/admin/${user.id}`,
           {
             method: "GET",
             headers: {
@@ -76,7 +76,7 @@ const CreateMatchForm = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/matches/create`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/matches/create`,
         {
           method: "POST",
           headers: {

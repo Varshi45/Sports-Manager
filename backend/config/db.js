@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
 // Construct the connection string using environment variables
-const connectionString = process.env.DB_URL;
+const connectionString = process.env.DATABASE_URL;
 
 // Create a new Sequelize instance with the connection string
 const sequelize = new Sequelize(connectionString, {

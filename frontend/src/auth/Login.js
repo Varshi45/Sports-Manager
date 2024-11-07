@@ -6,7 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { setUser, setSports } = useGlobalContext();
+  const { setUser } = useGlobalContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -15,10 +15,11 @@ function Login() {
       email,
       password,
     };
+    console.log("Backend Server URL:", process.env.REACT_APP_BACKEND_SERVER);
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/auth/login`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -58,58 +59,6 @@ function Login() {
       alert("An error occurred during login");
     }
   };
-
-  // const fetchSports = async (adminId) => {
-  //   if (!adminId) return;
-
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.REACT_APP_BACKEND_SERVER}/sports/admin/${adminId}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token
-  //         },
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch sports");
-  //     }
-
-  //     const data = await response.json();
-  //     setSports(data);
-  //   } catch (error) {
-  //     console.error("Error fetching sports:", error);
-  //     alert("An error occurred while fetching sports");
-  //   }
-  // };
-
-  // const getAllSports = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.REACT_APP_BACKEND_SERVER}/sports`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token
-  //         },
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch sports");
-  //     }
-
-  //     const data = await response.json();
-  //     setSports(data);
-  //   } catch (error) {
-  //     console.error("Error fetching all sports:", error);
-  //     alert("An error occurred while fetching all sports");
-  //   }
-  // };
 
   return (
     <div className="flex items-center justify-center h-screen">

@@ -10,7 +10,7 @@ const AdminAnalysis = () => {
   const fetchSportsByAdmin = useCallback(async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/sports/admin/${adminId}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/sports/admin/${adminId}`,
         {
           method: "GET",
           headers: {
@@ -29,7 +29,7 @@ const AdminAnalysis = () => {
   const fetchMatches = useCallback(async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/matches/admin/${adminId}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/matches/admin/${adminId}`,
         {
           method: "GET",
           headers: {
@@ -64,7 +64,7 @@ const AdminAnalysis = () => {
       const updatedMatches = await Promise.all(
         matches.map(async (match) => {
           const response = await fetch(
-            `${process.env.REACT_APP_BACKEND_SERVER}/joins/match/${match.id}/players`,
+            `${process.env.REACT_APP_BACKEND_SERVER}/api/joins/match/${match.id}/players`,
             {
               method: "GET",
               headers: {

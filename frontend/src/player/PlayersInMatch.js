@@ -10,7 +10,7 @@ const PlayersInMatch = () => {
   const fetchPlayers = useCallback(async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/joins/match/${matchId}/players`
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/joins/match/${matchId}/players`
       );
       const data = await response.json();
       setPlayers(data.players);

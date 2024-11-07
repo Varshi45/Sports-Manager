@@ -41,10 +41,10 @@ app.get("/api/test", async (req, res) => {
 });
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/sports", sportRoutes);
-app.use("/matches", matchRoutes);
-app.use("/joins", joinRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/sports", sportRoutes);
+app.use("/api/matches", matchRoutes);
+app.use("/api/joins", joinRoutes);
 
 // Start the server
 const startServer = async () => {

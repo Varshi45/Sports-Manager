@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: ./backend/.env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://postgres:ZxBLNwZUbPOyRKsAmTlRAVCHaQFzvygf@autorack.proxy.rlwy.net:47163/railway"
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_BACKEND_SERVER: http://localhost:5000
+    env_file: ./frontend/.env
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend

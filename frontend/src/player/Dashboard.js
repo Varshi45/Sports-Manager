@@ -10,13 +10,13 @@ const PlayerDashboard = () => {
   const fetchSportsAndMatches = async () => {
     try {
       const sportsResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/sports`
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/sports`
       );
       const sportsData = await sportsResponse.json();
       setSports(sportsData);
 
       const matchesResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/matches`
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/matches`
       );
       const matchesData = await matchesResponse.json();
       setMatches(matchesData);
@@ -33,7 +33,7 @@ const PlayerDashboard = () => {
     if (playerId) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/joins/player/${playerId}`
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/joins/player/${playerId}`
         );
         const data = await response.json();
         setJoinedMatches(data.joins.map((join) => join.matchId));
@@ -69,7 +69,7 @@ const PlayerDashboard = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/joins/join`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/joins/join`,
         {
           method: "POST",
           headers: {

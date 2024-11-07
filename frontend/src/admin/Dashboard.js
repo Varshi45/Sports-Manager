@@ -13,7 +13,7 @@ const AdminDashboard = () => {
       if (!userId) return;
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/sports/admin/${userId}`,
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/sports/admin/${userId}`,
           {
             method: "GET",
             headers: {
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
       if (!userId) return;
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/matches/admin/${userId}`,
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/matches/admin/${userId}`,
           {
             method: "GET",
             headers: {
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
     if (!sportId) return;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/sports/${sportId}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/sports/${sportId}`,
         {
           method: "DELETE",
           headers: {
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
     if (!matchId) return;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/matches/${matchId}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/matches/${matchId}`,
         {
           method: "DELETE",
           headers: {
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
 
   const handleSignout = async () => {
     try {
-      await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/auth/signout`, {
+      await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/auth/signout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
