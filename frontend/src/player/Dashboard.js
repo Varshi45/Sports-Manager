@@ -104,6 +104,14 @@ const PlayerDashboard = () => {
             <li>
               <button
                 className="hover:text-gray-300"
+                onClick={() => navigate("/player/dashboard/profile")}
+              >
+                Profile
+              </button>
+            </li>
+            <li>
+              <button
+                className="hover:text-gray-300"
                 onClick={() => navigate("/player/joined-matches")}
               >
                 Matches-Joined

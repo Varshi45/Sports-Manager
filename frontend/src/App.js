@@ -12,6 +12,7 @@ import CreateSportForm from "./admin/CreateSportForm";
 import CreateMatchForm from "./admin/CreateMatch";
 import PlayersInMatch from "./player/PlayersInMatch";
 import PlayerMatches from "./player/PlayerMatches";
+import PlayerProfile from "./player/PlayerProfile";
 
 function App() {
   return (
@@ -76,6 +77,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <PlayerMatches />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/player/dashboard/profile"
+              element={
+                <ProtectedRoute>
+                  <PlayerProfile />
                 </ProtectedRoute>
               }
             />

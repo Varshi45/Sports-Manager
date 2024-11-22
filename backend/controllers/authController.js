@@ -57,6 +57,36 @@ const authController = {
   async signout(req, res) {
     res.json({ message: "Successfully signed out" });
   },
+
+  async updateNames(req, res) {
+    const { id, role, firstName, lastName } = req.body;
+
+    try {
+      // Update user in the respective model based on their role
+      let user;
+      if (role === "admin") {
+        user = await Admin.findByPk(id);
+      } else if (role === "player") {
+        user = await Player.findByPk(id);
+      }
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Update the user's names
+      user.firstName = firstName || user.firstName;
+      user.lastName = lastName || user.lastName;
+      await user.save();
+
+      res.json({ message: "Names updated successfully", user: user.toJSON() });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "An error occurred while updating names" });
+    }
+  },
 };
 
 module.exports = authController;

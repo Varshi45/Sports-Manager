@@ -15,7 +15,6 @@ function Login() {
       email,
       password,
     };
-    console.log("Backend Server URL:", process.env.REACT_APP_BACKEND_SERVER);
 
     try {
       const response = await fetch(
@@ -39,11 +38,6 @@ function Login() {
           localStorage.setItem("token", result.token); // Store the token in localStorage
           setUser(result.user);
           localStorage.setItem("user", JSON.stringify(result.user));
-          // if (result.user.role === "admin") {
-          //   fetchSports(result.user.id);
-          // } else {
-          //   await getAllSports();
-          // }
         }
 
         if (result.user.role === "admin") {
