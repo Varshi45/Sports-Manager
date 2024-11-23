@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import { useGlobalContext } from "../context/Globalcontext";
 
 function Login() {
@@ -8,8 +9,9 @@ function Login() {
   const navigate = useNavigate();
   const { setUser } = useGlobalContext();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+  // Handle email/password login
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
 
     const loginData = {
       email,
@@ -33,13 +35,11 @@ function Login() {
       if (response.ok) {
         alert("Login successful!");
 
-        // Store the token if returned
-        if (result.token) {
-          localStorage.setItem("token", result.token); // Store the token in localStorage
-          setUser(result.user);
-          localStorage.setItem("user", JSON.stringify(result.user));
-        }
-
+        // Store the token and user data
+        localStorage.setItem("token", result.token);
+        setUser(result.user);
+        localStorage.setItem("user", JSON.stringify(result.user));
+        // Navigate based on user role
         if (result.user.role === "admin") {
           navigate("/admin/dashboard");
         } else if (result.user.role === "player") {
@@ -54,12 +54,51 @@ function Login() {
     }
   };
 
+  // Handle Google Login
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/auth/google-login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: credentialResponse.credential }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Google Login successful!");
+
+        // Store the token and user data
+        localStorage.setItem("token", result.token);
+        setUser(result.user);
+        let user = result.user;
+        let role = "player";
+        user = { ...user, role };
+        console.log(user);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        navigate("/player/dashboard");
+      } else {
+        alert(result.message || "Google Login failed");
+      }
+    } catch (error) {
+      console.error("Error during Google Login:", error);
+      alert("An error occurred during Google Login");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="max-w-md bg-white bg-opacity-90 p-8 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold mb-5 text-gray-800">Login</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email/Password Login Form */}
+        <form onSubmit={handleEmailLogin} className="space-y-4">
           <input
             type="email"
             placeholder="Email"
@@ -78,10 +117,21 @@ function Login() {
           />
           <input
             type="submit"
-            value="Submit"
+            value="Login"
             className="w-full bg-blue-500 text-white font-bold py-2 rounded"
           />
         </form>
+
+        {/* Google Login */}
+        <div className="mt-4 text-center">
+          <p className="text-gray-600">Or login with:</p>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => console.error("Google Login failed")}
+          />
+        </div>
+
+        {/* Signup Link */}
         <p className="mt-5 text-center">
           <a href="/signup" className="text-blue-500 hover:text-blue-700">
             Create Account..!

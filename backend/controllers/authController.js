@@ -3,11 +3,11 @@
 const bcrypt = require("bcrypt");
 const { Admin, Player } = require("../models");
 const { generateToken } = require("../utils/jwtUtils");
+const { verifyGoogleToken } = require("../utils/googleAuth");
 
 const authController = {
   async login(req, res) {
     const { email, password } = req.body;
-
     // Check if user exists in Admin or Player model
     let user = await Admin.findOne({ where: { email } });
     let role = "admin";
@@ -17,17 +17,24 @@ const authController = {
       role = "player";
     }
 
-    // If user not found or password is incorrect
-    if (!user || !bcrypt.compareSync(password, user.password)) {
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    // Block password login for Google users
+    if (user.password === "google") {
+      return res.status(400).json({
+        message: "This account is linked to Google. Please use Google Login.",
+      });
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken(user);
-
-    // Attach role to the user data before returning
     res.json({ token, user: { ...user.toJSON(), role } });
   },
-
   async signup(req, res) {
     const { firstName, lastName, email, password, role } = req.body;
 
@@ -85,6 +92,33 @@ const authController = {
       res
         .status(500)
         .json({ message: "An error occurred while updating names" });
+    }
+  },
+
+  async googleLogin(req, res) {
+    const { token } = req.body;
+
+    try {
+      const googleUser = await verifyGoogleToken(token);
+
+      // Check if user exists in the database
+      let user = await Player.findOne({ where: { email: googleUser.email } });
+
+      if (!user) {
+        // Create a new user for Google login
+        user = await Player.create({
+          firstName: googleUser.given_name,
+          lastName: googleUser.family_name,
+          email: googleUser.email,
+          password: "google", // Placeholder for Google users
+        });
+      }
+
+      const appToken = generateToken(user);
+      res.json({ token: appToken, user: user.toJSON() });
+    } catch (error) {
+      console.error("Google login failed:", error);
+      res.status(401).json({ message: "Google authentication failed" });
     }
   },
 };

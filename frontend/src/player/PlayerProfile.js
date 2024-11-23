@@ -130,9 +130,9 @@ const Profile = () => {
           <p>
             <strong>Email:</strong> {user.email}
           </p>
-          <p>
+          {/* <p>
             <strong>Role:</strong> {user.role}
-          </p>
+          </p> */}
         </div>
         {isEditing && (
           <div className="mt-4 flex space-x-3">
